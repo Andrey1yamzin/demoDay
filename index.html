@@ -36,106 +36,120 @@
         if (condition === false){
                     alert(`Прощайте!`);
                 };
-            if(condition === true){
+
+        if(condition === true){
                 lineM = +prompt(`Введите количество строк для матрицы C?`, ``);
+                if(isNaN(lineM)){
+                    lineM = +prompt(`Ошиба! Введите числом количество строк для матрицы C?`, ``);
+                };
                 columnN = +prompt(`Введите количество столбцов для матрицы C?`, ``);
+                if(isNaN(columnN)){
+                    columnN = +prompt(`Ошиба! Введите числом столбцов для матрицы C?`, ``);
+                };
                 columnL = +prompt(`Введите количество столбцов для матрицы D?\nКоличество строк одинаковое с матрицей C: ${lineM}\nПо этой причине ввод строки не требуется!`, ``);
-           
+                if(isNaN(columnL)){
+                    columnL = +prompt(`Ошиба! Введите числом  количество столбцов для матрицы D?\nКоличество строк одинаковое с матрицей C: ${lineM}\nПо этой причине ввод строки не требуется!`, ``);
+                };
+               
+                if(isNaN(lineM) || isNaN(columnN) || isNaN(columnL)){
+                    alert(`Вы ввели значения не числом! Попробуйте заново.`);
+                    location.reload();
+                }else{
+                            //рандомные числа для матрицы C
+                            for(let i = 0; i < lineM; i++){                         
+                                    C[i] = [];
+                                    for(let j = 0; j < columnN; j++){
+                                        C[i][j] = -10 + (Math.round(Math.random() * 50));
+                                    };
+                                };
 
-                //рандомные числа для матрицы C
-        for(let i = 0; i < lineM; i++){
-            C[i] = [];
-            for(let j = 0; j < columnN; j++){
-                C[i][j] = -10 + (Math.round(Math.random() * 50));
+                            //рандомные числа для матрицы D
+                                    for(let i = 0; i < lineM; i++){                         
+                                 D[i] = [];
+                                 for(let j = 0; j < columnL; j++){
+                                     D[i][j] = -10 + (Math.round(Math.random() * 50));
+                                 };
+                             };
+
+                            // из матрицы вытаскиваем элементы
+                                    for(let i = 0; i < lineM; i++){
+                                        for(let j = 0; j < columnN; j++){
+                                            sortC.push(C[i][j]);
+                                        };
+                                    };
+                                
+                            //сортируем элементы
+                                    for (let i = 1; i < sortC.length; i++) {             
+                                    let current = sortC[i];
+                                    let j = i;
+                                    while (j > 0 && sortC[j - 1] > current) {
+                                        sortC[j] = sortC[j - 1];
+                                        j--;
+                                    };
+                                     sortC[j] = current;
+                                   };
+
+                            //добавляем элементы в новую матрицу C1
+                                    let counterA = 0; 
+                                    for(let i = 0; i < lineM; i++){  
+                                        C1[i] = [];  
+                                        for(let j = 0; j < columnN; j++){
+                                            C1[i][j] = sortC[counterA];
+                                            counterA++;
+                                         };
+                                    };
+                                
+                            //Вычисление аглебраической суммы строк из матрицы D  
+                                    for(let i = 0; i < lineM; i++){
+                                        sum[i] = 0;
+                                        for(let j = 0; j < columnL; j++){
+                                            sum[i] += D[i][j];
+                                        };
+                                    };
+                                
+                            // вычитание суммы строк D из каждого элемента матрицы C1
+                                    for(let i = 0; i < lineM; i++){
+                                         E[i] = [];
+                                         for(let j = 0; j < columnN; j++){
+                                             E[i][j] = C1[i][j] - sum[i];
+                                         };
+                                    };
+                                
+                                
+                            // вывод матрицы C1
+                                    document.write(`<h3>Матрица C1</h3>`);
+                                    for(let i = 0; i < lineM; i++){
+                                        document.write(`<table><tr>`);
+                                        for(let j = 0; j < columnN; j++){
+                                            document.write(`<td>${C1[i][j]}</td>`)
+                                        };
+                                         document.write(`</tr></table>`);
+                                    }
+                                
+                            //вывод матрицы E
+                                    document.write(`<h3>Матрица E</h3>`);
+                                    for(let i = 0; i < lineM; i++){
+                                        document.write(`<table><tr>`);
+                                        for(let j = 0; j < columnN; j++){
+                                            document.write(`<td>${E[i][j]}</td>`)
+                                        };
+                                        document.write(`</tr></table>`);
+                                    };
+                                
+                                
+                            //вывод входящих и исходящих элементов для проверки
+                                    console.log(`C`);
+                                    console.log(C);
+                                    console.log(`D`);
+                                    console.log(D);
+                                    console.log(`Сумма элементов`);
+                                    console.log(sum);
+                                    console.log(`C1`);
+                                    console.log(C1);
+                                    console.log(`E`);
+                                    console.log(E);
+                    };
             };
-        };
-
-//рандомные числа для матрицы D
-        for(let i = 0; i < lineM; i++){
-            D[i] = [];
-            for(let j = 0; j < columnL; j++){
-                D[i][j] = -10 + (Math.round(Math.random() * 50));
-            };
-        };
-
-// из матрицы вытаскиваем элементы
-        for(let i = 0; i < lineM; i++){
-            for(let j = 0; j < columnN; j++){
-                sortC.push(C[i][j]);
-            };
-        };
-
-//сортируем элементы
-        for (let i = 1; i < sortC.length; i++) {             
-            let current = sortC[i];
-            let j = i;
-            while (j > 0 && sortC[j - 1] > current) {
-                sortC[j] = sortC[j - 1];
-                j--;
-            };
-             sortC[j] = current;
-        };
-
-//добавляем элементы в новую матрицу C1
-        let counterA = 0; 
-        for(let i = 0; i < lineM; i++){  
-            C1[i] = [];  
-            for(let j = 0; j < columnN; j++){
-                C1[i][j] = sortC[counterA];
-                counterA++;
-             };
-        };
-
-//Вычисление аглебраической суммы строк из матрицы D  
-        for(let i = 0; i < lineM; i++){
-            sum[i] = 0;
-            for(let j = 0; j < columnL; j++){
-                sum[i] += D[i][j];
-            };
-        };
-
-// вычитание суммы строк D из каждого элемента матрицы C1
-        for(let i = 0; i < lineM; i++){
-             E[i] = [];
-             for(let j = 0; j < columnN; j++){
-                 E[i][j] = C1[i][j] - sum[i];
-             };
-        };
-
-
-// вывод матрицы C1
-        document.write(`<h3>Матрица C1</h3>`);
-        for(let i = 0; i < lineM; i++){
-            document.write(`<table><tr>`);
-            for(let j = 0; j < columnN; j++){
-                document.write(`<td>${C1[i][j]}</td>`)
-            };
-             document.write(`</tr></table>`);
-        }
-
-//вывод матрицы E
-        document.write(`<h3>Матрица E</h3>`);
-        for(let i = 0; i < lineM; i++){
-            document.write(`<table><tr>`);
-            for(let j = 0; j < columnN; j++){
-                document.write(`<td>${E[i][j]}</td>`)
-            };
-            document.write(`</tr></table>`);
-        };
-
-
-//вывод входящих и исходящих элементов для проверки
-        console.log(`C`);
-        console.log(C);
-        console.log(`D`);
-        console.log(D);
-        console.log(`Сумма элементов`);
-        console.log(sum);
-        console.log(`C1`);
-        console.log(C1);
-        console.log(`E`);
-        console.log(E);
-            } ;
 
 
     </script>
